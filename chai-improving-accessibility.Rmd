@@ -1,6 +1,5 @@
 ---
-title: Improving Accessibility in Data Visualizations
-  Created by ggplot2
+title: Improving Accessibility in \ Data Visualizations \ Created by ggplot2
 author: "Christine P. Chai (Microsoft)"
 header-includes: 
 output:
