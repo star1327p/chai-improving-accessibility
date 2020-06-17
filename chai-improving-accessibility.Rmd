@@ -1,0 +1,177 @@
+---
+title: Improving Accessibility in Data Visualizations
+  Created by ggplot2
+author: "Christine P. Chai (Microsoft)"
+header-includes: 
+output:
+  ioslides_presentation:
+    logo: userlogo.png
+    css: style.css
+  md_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.align="center")
+library(ggplot2)
+library(reshape2)
+```
+
+
+## Overview
+
+Accessibility is the practice of ensuring everyone can access our content, including people with disabilities. Making data visualizations accessible allows us to increase the size of the audience pool, resulting in a larger potential impact. We will demonstrate how to improve accessibility in the graphs created by the `R` package *ggplot2*.
+
+
+# Customize the Trends
+
+```{r data-trends, include=FALSE}
+# Sell two products "alpha" and "beta"
+year = c(2013,2014,2015, 2016, 2017, 2018)
+alpha = c(45,15,50,68,30,20)
+beta  = c(30,76,37,40,53,48)
+trends = data.frame(year,alpha,beta)
+
+new.df = melt(trends,id.vars="year",
+              variable.name="product", value.name="number")
+```
+
+## Product Annual Sales: Inaccessible
+
+```{r trends-inaccessible, fig.cap="Product Annual Sales (Color)"}
+trends_original = ggplot(data=new.df,aes(x=year,y=number,group=product)) +
+  xlab("Year") + ylab("Number of Sales") +
+  geom_path(aes(col=product),size=1.5) + 
+  geom_point(aes(col=product),size=4.2) +
+  scale_x_continuous(breaks=c(2013:2018)) +
+  scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80)) +
+  scale_color_manual(values=c("red","darkgreen"), 
+                     labels=c("Alpha (red)", "Beta (green)")) +
+  theme_bw(base_size=24) +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title=element_blank(),
+        legend.key.size = unit(2.5,"cm"))
+
+trends_original
+```
+
+
+## Change the Line Types: Code
+
+`R` package: `ggplot2`  
+
+- `geom_path(aes(col=product,  
+linetype=product))`  
+changes the line types by trend.
+
+- `scale_linetype_manual(  
+values=c("dashed","solid"))`  
+includes the line types in legend.
+
+## Change the Line Types: Graph
+
+```{r trends-line-type, fig.cap="Product Annual Sales (Line Type)"}
+trends_linetype = ggplot(data=new.df,aes(x=year,y=number,group=product)) +
+  xlab("Year") + ylab("Number of Sales") +
+  geom_path(aes(col=product,linetype=product),size=1.5) + 
+  geom_point(aes(col=product),size=4.2) +
+  scale_x_continuous(breaks=c(2013:2018)) +
+  scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80)) +
+  scale_color_manual(values=c("red","darkgreen"),
+                     labels=c("Alpha (dashed)", "Beta (solid)")) +
+  scale_linetype_manual(values=c("dashed","solid"),
+                        labels=c("Alpha (dashed)", "Beta (solid)")) +
+  theme_bw(base_size=24) +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title=element_blank(),
+        legend.key.size = unit(2.5,"cm"))
+
+trends_linetype
+```
+
+## Change the Point Shapes: Code
+
+`R` package: `ggplot2`  
+
+- `geom_point(aes(col=product,  
+shape=product))`  
+changes the point shapes by trend.
+
+- `scale_shape_manual(  
+values=c("circle","triangle"))`  
+includes the point shapes in legend.
+
+## Change the Point Shapes: Graph
+
+```{r trends-point-shape, fig.cap="Product Annual Sales (Point Shape)"}
+trends_pointshape = ggplot(data=new.df,aes(x=year,y=number,group=product)) +
+  xlab("Year") + ylab("Number of Sales") +
+  geom_path(aes(col=product),size=1.5) + 
+  geom_point(aes(col=product,shape=product),size=4.2) +
+  scale_x_continuous(breaks=c(2013:2018)) +
+  scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80)) +
+  scale_color_manual(values=c("red","darkgreen"),
+                     labels=c("Alpha (circle)", "Beta (triangle)")) +
+  scale_shape_manual(values=c("circle","triangle"),
+                     labels=c("Alpha (circle)", "Beta (triangle)")) +
+  theme_bw(base_size=24) +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title=element_blank(),
+        legend.key.size = unit(2.5,"cm"))
+
+trends_pointshape
+```
+
+# Closing
+
+## Conclusion
+
+We can use color, but we should not solely rely on color. Each trend needs to be distinguishable in the absence of color.  
+
+Otherwise, people with color blindness won't be able to read the graph. This is about 300 million people, or 4.5% of the global population.
+
+## Final Message
+
+"Data visualizations should be accessible.   
+
+ If not, we are not doing it right."  
+
+[-- Christine Chai (chrchai@microsoft.com)]{style="float:right"}   
+
+\
+
+\
+
+Slides: <https://tinyurl.com/chai-2020>
+
+
+# Appendix
+
+## Acknowledgments 
+
+I'd like to thank my Microsoft colleagues:  
+
+- Manish Agrawal
+
+- Toby Fitch
+
+- Ben Mathwig
+
+- Stephanie Picioccio
+
+
+## More Resources
+
+- Data Visualization and Accessibility  
+https://tinyurl.com/sdss-2020-chai
+
+- UX Foundations: Accessibility    
+https://tinyurl.com/ux-access
+
+- Accessibility for Web Design   
+https://tinyurl.com/color-design
+
+- MSFTenable: Microsoft Accessibility  
+http://youtube.com/MSFTenable
